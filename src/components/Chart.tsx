@@ -45,11 +45,8 @@ const dataFormatter = (number: number) =>
 export function BarChartExampleWithGroups() {
   return (
     <>
-      <h3 className="text-lg font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong">
-        Writing Contest: Entries
-      </h3>
       <BarChart
-        className="mt-6  max-w-[50vw]"
+        className="mt-6 max-w-[60vw] border-2 rounded-sm"
         data={chartdata}
         index="name"
         categories={[
