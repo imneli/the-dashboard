@@ -46,7 +46,7 @@ export function BarChartExampleWithGroups() {
   return (
     <>
       <BarChart
-        className="mt-6 max-w-[60vw] border-2 rounded-sm"
+        className="mt-6 max-w-[60vw] rounded-sm"
         data={chartdata}
         index="name"
         categories={[

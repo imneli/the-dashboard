@@ -2,11 +2,15 @@ import { DollarSign } from 'lucide-react'
 import { BarChartExampleWithGroups } from '../../components/Chart'
 import {  } from '../../components/Donut'
 
+
 import '../../styles/Globalstyle.css'
+import SideBar from '../../components/SideBar';
 
 function Home() {
  return (
     <>
+    <div className='flex justify-center relative'>
+        <SideBar/>
         <section className="min-h-screen flex justify-center items-center relative-bg">
             <div className="bg-white min-h-[40vw] min-w-[80vw] rounded-xl p-5 shadow-2xl">
                 <div className="bg-gray-50 shadow-sm min-h-[20vh] min-w-[10vw] rounded-xl flex items-center justify-evenly p-5">
@@ -21,8 +25,11 @@ function Home() {
                 </div>
             </div>
         </section>
+        </div>
     </>
  )   
 }
+
+
 
 export default Home
