@@ -15,8 +15,6 @@ function Home() {
                     <BarChartExampleWithGroups />
                     <div className='flex flex-col items-end'>
                         <CardTest/>
-                        <CardTest/>
-                        <CardTest/>
                     </div>
                     
                 </div>
