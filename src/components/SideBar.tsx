@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 function SideBar() {
     return(
         <>
-            <div className='h-screen bg-gray-50 border-r-4 w-12 absolute left-0 flex justify-center align-top pt-5 z-10'>
+            <div className='h-screen bg-gray-50/80 border-r-4/3 w-12 absolute left-0 flex justify-center align-top pt-5 z-10'>
                 <div className=' flex justify-between flex-col'>
                         <ul className='flex flex-col gap-5'>
                             <li><NavLink to="/"><House color='#1e1e1e'/></NavLink></li>

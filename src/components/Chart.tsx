@@ -8,7 +8,6 @@ const chartdata = [
     'Investments': 538,
     'Pets': 396,
     'Restaurants': 138,
-    'Group F': 436,
   },
   {
     name: 'February',
@@ -17,7 +16,6 @@ const chartdata = [
     'Investments': 253,
     'Pets': 333,
     'Restaurants': 133,
-    'Group F': 533,
   },
   {
     name: 'March',
@@ -26,7 +24,6 @@ const chartdata = [
     'Investments': 352,
     'Pets': 718,
     'Restaurants': 539,
-    'Group F': 234,
   },
   {
     name: 'April',
@@ -35,7 +32,6 @@ const chartdata = [
     'Investments': 28,
     'Pets': 33,
     'Restaurants': 61,
-    'Group F': 53,
   },
 ];
 
@@ -55,9 +51,8 @@ export function BarChartExampleWithGroups() {
           'Investments',
           'Pets',
           'Restaurants',
-          'Group F',
-        ]}
-        colors={['blue', 'teal', 'amber', 'rose', 'indigo', 'emerald']}
+                  ]}
+        colors={['blue', 'teal', 'amber', 'cyan', 'sky', 'emerald']}
         valueFormatter={dataFormatter}
         yAxisWidth={48}
       />
