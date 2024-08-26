@@ -1,4 +1,4 @@
-import { RiFlag2Line } from '@remixicon/react';
+import { RiCheckDoubleFill } from '@remixicon/react';
 import {
   Badge,
   Card,
@@ -58,10 +58,10 @@ export function TableUse() {
                 <DateRangePickerHero/>
               </TableCell>
               <TableCell>
-                <ProgressBar value={item.progress} color="blue" className="mt-3" />
+                <ProgressBar value={item.progress} color="cyan" className="mt-3" />
               </TableCell>
               <TableCell>
-                <Badge color="emerald" icon={RiFlag2Line}>
+                <Badge color="cyan" icon={RiCheckDoubleFill}>
                   {item.status}
                 </Badge>
               </TableCell>
@@ -73,18 +73,8 @@ export function TableUse() {
   );
 }
 
-export function ProgressBarUsageExample() {
-  return (
-    <>
-      <Card className="mx-auto max-w-sm">
-        <ProgressBar value={45} color="blue" className="mt-3" />
-      </Card>
-    </>
-  );
-}
-
 export function DateRangePickerHero() {
   return (
-      <DatePicker />
+      <DatePicker className='' />
   );
 }
