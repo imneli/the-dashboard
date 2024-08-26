@@ -10,3 +10,13 @@ export function BadgeTrue() {
         </div>
   );
 }
+
+export function BadgePlus() {
+  return (
+        <div className="flex flex-wrap items-center mr-5">
+          <BadgeDelta>
+           
+          </BadgeDelta>
+        </div>
+  );
+}

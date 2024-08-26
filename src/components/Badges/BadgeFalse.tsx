@@ -11,3 +11,13 @@
           </div>
     );
   }
+
+  export function BadgeMinus() {
+    return (
+          <div className="flex flex-wrap items-center mr-5">
+            <BadgeDelta deltaType="decrease" isIncreasePositive={true}>
+             
+            </BadgeDelta>
+          </div>
+    );
+  }
