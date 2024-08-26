@@ -21,6 +21,7 @@ const data = [
         description: "Lorem ipsum dolor sit amet.",
         price: "$40"
     },
+    
 ]
 
 export function CardDesc() {
