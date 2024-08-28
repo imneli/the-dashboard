@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, TextInput, NumberInput, Select, SelectItem } from '@tremor/react';
 import { RiSearch2Line } from "@remixicon/react";
 import { BadgeMinus } from "../../components/Badges/BadgeFalse";
@@ -15,6 +15,13 @@ function Wallet() {
     const [showForm, setShowForm] = useState<boolean>(false);
     const [transactions, setTransactions] = useState<Transaction[]>([]);
 
+    useEffect(() => {
+        const storedTransactions = sessionStorage.getItem('transactions'); // load
+        if (storedTransactions) {
+            setTransactions(JSON.parse(storedTransactions));
+        }
+    }, []);
+
     const handleButtonClick = () => {
         setShowForm(prev => !prev);
     };
@@ -24,7 +31,9 @@ function Wallet() {
     };
 
     const addTransaction = (newTransaction: Transaction) => {
-        setTransactions(prevTransactions => [...prevTransactions, newTransaction]);
+        const updatedTransactions = [...transactions, newTransaction];
+        setTransactions(updatedTransactions);
+        sessionStorage.setItem('transactions', JSON.stringify(updatedTransactions)); // salvar no session storage
         setShowForm(false);
     };
 
@@ -44,21 +53,21 @@ function Wallet() {
                                 <h1 className="font-semibold text-center">No data was found</h1>
                             ) : (
                                 <ul>
-                        {transactions.map((transaction, index) => (
-                            <li key={index} className="mb-2 flex items-center">
-                                {transaction.amount < 0 ? (
-                                    <BadgeMinus />
-                                ) : (
-                                    <BadgePlus />
-                                )}
-                                <strong>{transaction.description}</strong>
-                                <span className="mx-2">|</span>
-                                <span>$ {transaction.amount}</span>
-                                <span className="mx-2">|</span>
-                                <span>{transaction.category}</span>
-                            </li>
-                        ))}
-                    </ul>
+                                    {transactions.map((transaction, index) => (
+                                        <li key={index} className="mb-2 flex items-center">
+                                            {transaction.amount < 0 ? (
+                                                <BadgeMinus />
+                                            ) : (
+                                                <BadgePlus />
+                                            )}
+                                            <strong>{transaction.description}</strong>
+                                            <span className="mx-2">|</span>
+                                            <span>$ {transaction.amount}</span>
+                                            <span className="mx-2">|</span>
+                                            <span>{transaction.category}</span>
+                                        </li>
+                                    ))}
+                                </ul>
                             )}
                         </div>
 
