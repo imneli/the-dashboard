@@ -4,6 +4,7 @@ import { RiSearch2Line } from "@remixicon/react";
 import { BadgeMinus } from "../../components/Badges/BadgeFalse";
 import { BadgePlus } from "../../components/Badges/BadgeTrue";
 import { X, Trash2 } from "lucide-react";
+import { Badge } from '@tremor/react';
 
 interface Transaction {
   id: string;
@@ -75,7 +76,7 @@ function Wallet() {
                                                             <span className="mx-2">|</span>
                                                             <span>$ {transaction.amount}</span>
                                                             <span className="mx-2">|</span>
-                                                            <span>{transaction.category}</span>
+                                                            <span><Badge>{transaction.category}</Badge></span>
                                                         </div>
                                                     <Button
                                                         onClick={() => deleteTransaction(transaction.id)}
