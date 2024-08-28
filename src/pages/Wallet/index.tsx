@@ -153,6 +153,7 @@ export function FormData({ addTransaction }: FormDataProps) {
                 className="mx-auto max-w-xs m-0 mb-2" 
                 value={description}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDescription(e.target.value)}
+                required
             />
             <label htmlFor="amount" className="mb-2">Amount:</label>
             <NumberInput 
