@@ -3,9 +3,10 @@ import { Button, TextInput, NumberInput, Select, SelectItem } from '@tremor/reac
 import { RiSearch2Line } from "@remixicon/react";
 import { BadgeMinus } from "../../components/Badges/BadgeFalse";
 import { BadgePlus } from "../../components/Badges/BadgeTrue";
-import { X } from "lucide-react";
+import { X, Trash2 } from "lucide-react";
 
 interface Transaction {
+  id: string;
   description: string;
   amount: number;
   category: string;
@@ -16,7 +17,7 @@ function Wallet() {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
 
     useEffect(() => {
-        const storedTransactions = sessionStorage.getItem('transactions'); // load
+        const storedTransactions = sessionStorage.getItem('transactions');
         if (storedTransactions) {
             setTransactions(JSON.parse(storedTransactions));
         }
@@ -30,11 +31,18 @@ function Wallet() {
         setShowForm(false);
     };
 
-    const addTransaction = (newTransaction: Transaction) => {
-        const updatedTransactions = [...transactions, newTransaction];
+    const addTransaction = (newTransaction: Omit<Transaction, 'id'>) => {
+        const transactionWithId = { ...newTransaction, id: Date.now().toString() };
+        const updatedTransactions = [...transactions, transactionWithId];
         setTransactions(updatedTransactions);
-        sessionStorage.setItem('transactions', JSON.stringify(updatedTransactions)); // salvar no session storage
+        sessionStorage.setItem('transactions', JSON.stringify(updatedTransactions));
         setShowForm(false);
+    };
+
+    const deleteTransaction = (id: string) => {
+        const updatedTransactions = transactions.filter(transaction => transaction.id !== id);
+        setTransactions(updatedTransactions);
+        sessionStorage.setItem('transactions', JSON.stringify(updatedTransactions));
     };
 
     return (
@@ -52,22 +60,36 @@ function Wallet() {
                             {transactions.length === 0 ? (
                                 <h1 className="font-semibold text-center">No data was found</h1>
                             ) : (
-                                <ul>
-                                    {transactions.map((transaction, index) => (
-                                        <li key={index} className="mb-2 flex items-center">
-                                            {transaction.amount < 0 ? (
-                                                <BadgeMinus />
-                                            ) : (
-                                                <BadgePlus />
-                                            )}
-                                            <strong>{transaction.description}</strong>
-                                            <span className="mx-2">|</span>
-                                            <span>$ {transaction.amount}</span>
-                                            <span className="mx-2">|</span>
-                                            <span>{transaction.category}</span>
-                                        </li>
-                                    ))}
-                                </ul>
+                                
+                                    <ul>
+                                        {transactions.map((transaction) => (
+                                            <div className="border-2 p-2 mb-2 rounded-md">
+                                                <li key={transaction.id} className="mb-2 flex items-center justify-between">
+                                                    <div className="flex items-center">
+                                                            {transaction.amount < 0 ? (
+                                                                <BadgeMinus />
+                                                            ) : (
+                                                                <BadgePlus />
+                                                            )}
+                                                            <strong>{transaction.description}</strong>
+                                                            <span className="mx-2">|</span>
+                                                            <span>$ {transaction.amount}</span>
+                                                            <span className="mx-2">|</span>
+                                                            <span>{transaction.category}</span>
+                                                        </div>
+                                                    <Button
+                                                        onClick={() => deleteTransaction(transaction.id)}
+                                                        color="red"
+                                                        variant="secondary"
+                                                        icon={Trash2}
+                                                        size="xs"
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                </li>
+                                            </div>
+                                        ))}
+                                    </ul>
                             )}
                         </div>
 
@@ -94,7 +116,7 @@ function Wallet() {
 export default Wallet;
 
 interface FormDataProps {
-    addTransaction: (transaction: Transaction) => void;
+    addTransaction: (transaction: Omit<Transaction, 'id'>) => void;
 }
 
 export function FormData({ addTransaction }: FormDataProps) {
@@ -104,7 +126,7 @@ export function FormData({ addTransaction }: FormDataProps) {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const newTransaction: Transaction = {
+        const newTransaction: Omit<Transaction, 'id'> = {
             description,
             amount,
             category: getCategoryName(category)
