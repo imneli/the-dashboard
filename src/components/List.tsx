@@ -66,9 +66,10 @@ export function TableUse({ goals, updateGoal, deleteGoal }: TableUseProps) {
               <TableCell>
                 {editingId === goal.id ? (
                   <input 
-                    value={goal.name} 
+                    value={goal.name}
+                    
                     onChange={(e) => handleChange(goal.id, 'name', e.target.value)}
-                    className="border rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                   />
                 ) : (
                   <span className="font-medium text-gray-800">{goal.name}</span>
@@ -93,7 +94,7 @@ export function TableUse({ goals, updateGoal, deleteGoal }: TableUseProps) {
                     type="number" 
                     value={goal.progress} 
                     onChange={(e) => handleChange(goal.id, 'progress', parseInt(e.target.value, 10))}
-                    className="border rounded px-2 py-1 mt-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                     min="0"
                     max="100"
                   />
