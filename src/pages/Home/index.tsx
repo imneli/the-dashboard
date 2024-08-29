@@ -1,5 +1,5 @@
 import { BarChartExampleWithGroups } from '../../components/Chart'
-import {  } from '../../components/Donut'
+import {  } from '../../components/CardsInvests'
 import '../../styles/Globalstyle.css'
 import Cards from '../../components/Cards';
 import { CardTest } from '../../components/Cards/CardBalance';
