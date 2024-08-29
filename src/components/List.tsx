@@ -1,4 +1,5 @@
-import { RiCheckDoubleFill } from '@remixicon/react';
+import { useState } from 'react';
+import { RiCheckDoubleFill, RiDeleteBin6Line, RiEdit2Line, RiSave3Line } from '@remixicon/react';
 import {
   Badge,
   Card,
@@ -10,71 +11,128 @@ import {
   TableRow,
   DatePicker,
   ProgressBar
-
 } from '@tremor/react';
 
+interface Goal {
+  id: number;
+  name: string;
+  progress: number;
+  status: string;
+  date: Date;
+}
 
-const data = [
-  {
-    name: 'Travel',
-    progress: 20,
-    status: 'active',
-  },
-  {
-    name: 'Home',
-    progress: 30,
-    status: 'active',
-  },
-  {
-    name: 'Car',
-    progress: 70,
-    status: 'active',
-  },
-  {
-    name: 'Other Stuff',
-    progress: 90,
-    status: 'active',
-  },
-];
+interface TableUseProps {
+  goals: Goal[];
+  updateGoal: (updatedGoal: Goal) => void;
+  deleteGoal: (id: number) => void;
+}
 
-export function TableUse() {
+export function TableUse({ goals, updateGoal, deleteGoal }: TableUseProps) {
+  const [editingId, setEditingId] = useState<number | null>(null);
+
+  const handleEdit = (goal: Goal) => {
+    setEditingId(goal.id);
+  };
+
+  const handleSave = (goal: Goal) => {
+    updateGoal(goal);
+    setEditingId(null);
+  };
+
+  const handleChange = (id: number, field: keyof Goal, value: string | number | Date) => {
+    const updatedGoal = goals.find(goal => goal.id === id);
+    if (updatedGoal) {
+      const newGoal = { ...updatedGoal, [field]: value };
+      updateGoal(newGoal);
+    }
+  };
+
   return (
-    <Card>
-      <h3 className="text-tremor-content-strong dark:text-dark-tremor-content-strong font-semibold">List of Goals</h3>
+    <Card className="overflow-hidden">
+      <h3 className="text-2xl font-bold mb-4 text-gray-800 ">Your Goals</h3>
       <Table className="mt-5">
         <TableHead>
-          <TableRow>
-            <TableHeaderCell>Goals</TableHeaderCell>
-            <TableHeaderCell>Date</TableHeaderCell>
-            <TableHeaderCell>Progress</TableHeaderCell>
-            <TableHeaderCell>Status</TableHeaderCell>
+          <TableRow className="bg-gray-100 ">
+            <TableHeaderCell className="text-gray-700">Goals</TableHeaderCell>
+            <TableHeaderCell className="text-gray-700">Date</TableHeaderCell>
+            <TableHeaderCell className="text-gray-700">Progress</TableHeaderCell>
+            <TableHeaderCell className="text-gray-700">Status</TableHeaderCell>
+            <TableHeaderCell className="text-gray-700">Actions</TableHeaderCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((item) => (
-            <TableRow key={item.name}>
-              <TableCell>{item.name}</TableCell>
+          {goals.map((goal) => (
+            <TableRow key={goal.id} className="hover:bg-gray-50  transition-colors duration-200">
               <TableCell>
-                <DateRangePickerHero/>
+                {editingId === goal.id ? (
+                  <input 
+                    value={goal.name} 
+                    onChange={(e) => handleChange(goal.id, 'name', e.target.value)}
+                    className="border rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                ) : (
+                  <span className="font-medium text-gray-800">{goal.name}</span>
+                )}
               </TableCell>
               <TableCell>
-                <ProgressBar value={item.progress} color="cyan" className="mt-3" />
+                <DatePicker 
+                  value={goal.date} 
+                  onValueChange={(date) => date && handleChange(goal.id, 'date', date)}
+                  disabled={editingId !== goal.id}
+                  className="w-full"
+                />
               </TableCell>
               <TableCell>
-                <Badge color="cyan" icon={RiCheckDoubleFill}>
-                  {item.status}
+                <ProgressBar 
+                  value={goal.progress} 
+                  color="cyan" 
+                  className="mt-2"
+                />
+                {editingId === goal.id && (
+                  <input 
+                    type="number" 
+                    value={goal.progress} 
+                    onChange={(e) => handleChange(goal.id, 'progress', parseInt(e.target.value, 10))}
+                    className="border rounded px-2 py-1 mt-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    min="0"
+                    max="100"
+                  />
+                )}
+              </TableCell>
+              <TableCell>
+                <Badge color="cyan" icon={RiCheckDoubleFill} className="text-sm">
+                  {goal.status}
                 </Badge>
+              </TableCell>
+              <TableCell>
+                <div className="flex space-x-2">
+                  {editingId === goal.id ? (
+                    <button 
+                      onClick={() => handleSave(goal)} 
+                      className="p-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors duration-200"
+                    >
+                      <RiSave3Line size={18} />
+                    </button>
+                  ) : (
+                    <button 
+                      onClick={() => handleEdit(goal)} 
+                      className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors duration-200"
+                    >
+                      <RiEdit2Line size={18} />
+                    </button>
+                  )}
+                  <button 
+                    onClick={() => deleteGoal(goal.id)} 
+                    className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors duration-200"
+                  >
+                    <RiDeleteBin6Line size={18} />
+                  </button>
+                </div>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </Card>
-  );
-}
-
-export function DateRangePickerHero() {
-  return (
-      <DatePicker className='' />
   );
 }
