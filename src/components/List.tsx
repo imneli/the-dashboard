@@ -29,22 +29,35 @@ interface TableUseProps {
 
 export function TableUse({ goals, updateGoal, deleteGoal }: TableUseProps) {
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [editingGoal, setEditingGoal] = useState<Goal | null>(null);
 
   const handleEdit = (goal: Goal) => {
     setEditingId(goal.id);
+    setEditingGoal({ ...goal });
   };
 
-  const handleSave = (goal: Goal) => {
-    updateGoal(goal);
-    setEditingId(null);
-  };
-
-  const handleChange = (id: number, field: keyof Goal, value: string | number | Date) => {
-    const updatedGoal = goals.find(goal => goal.id === id);
-    if (updatedGoal) {
-      const newGoal = { ...updatedGoal, [field]: value };
-      updateGoal(newGoal);
+  const handleSave = () => {
+    if (editingGoal) {
+      updateGoal(editingGoal);
+      setEditingId(null);
+      setEditingGoal(null);
     }
+  };
+
+  const handleChange = (field: keyof Goal, value: string | number | Date) => {
+    if (editingGoal) {
+      if (field === 'progress') {
+        const progressValue = Math.min(Math.max(0, Number(value)), 100);
+        setEditingGoal({ ...editingGoal, [field]: progressValue });
+      } else {
+        setEditingGoal({ ...editingGoal, [field]: value });
+      }
+    }
+  };
+
+  const handleComplete = (goal: Goal) => {
+    const completedGoal = { ...goal, progress: 100, status: 'Completed' };
+    updateGoal(completedGoal);
   };
 
   return (
@@ -66,9 +79,8 @@ export function TableUse({ goals, updateGoal, deleteGoal }: TableUseProps) {
               <TableCell>
                 {editingId === goal.id ? (
                   <input 
-                    value={goal.name}
-                    
-                    onChange={(e) => handleChange(goal.id, 'name', e.target.value)}
+                    value={editingGoal?.name || ''}
+                    onChange={(e) => handleChange('name', e.target.value)}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                   />
                 ) : (
@@ -77,23 +89,23 @@ export function TableUse({ goals, updateGoal, deleteGoal }: TableUseProps) {
               </TableCell>
               <TableCell>
                 <DatePicker 
-                  value={goal.date} 
-                  onValueChange={(date) => date && handleChange(goal.id, 'date', date)}
+                  value={editingId === goal.id ? editingGoal?.date : goal.date} 
+                  onValueChange={(date) => date && handleChange('date', date)}
                   disabled={editingId !== goal.id}
                   className="w-full"
                 />
               </TableCell>
               <TableCell>
                 <ProgressBar 
-                  value={goal.progress} 
+                  value={editingId === goal.id ? editingGoal?.progress || 0 : goal.progress} 
                   color="cyan" 
                   className="mt-2"
                 />
                 {editingId === goal.id && (
                   <input 
                     type="number" 
-                    value={goal.progress} 
-                    onChange={(e) => handleChange(goal.id, 'progress', parseInt(e.target.value, 10))}
+                    value={editingGoal?.progress || 0} 
+                    onChange={(e) => handleChange('progress', parseInt(e.target.value, 10))}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                     min="0"
                     max="100"
@@ -101,18 +113,25 @@ export function TableUse({ goals, updateGoal, deleteGoal }: TableUseProps) {
                 )}
               </TableCell>
               <TableCell>
-                <Badge color="cyan" icon={RiCheckDoubleFill} className="text-sm">
-                  {goal.status}
+                <Badge color={goal.progress === 100 ? "green" : "cyan"} icon={RiCheckDoubleFill} className="text-sm">
+                  {goal.progress === 100 ? 'Completed' : goal.status}
                 </Badge>
               </TableCell>
               <TableCell>
                 <div className="flex space-x-2">
                   {editingId === goal.id ? (
                     <button 
-                      onClick={() => handleSave(goal)} 
+                      onClick={handleSave} 
                       className="p-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors duration-200"
                     >
                       <RiSave3Line size={18} />
+                    </button>
+                  ) : goal.progress === 100 ? (
+                    <button 
+                      onClick={() => handleComplete(goal)}
+                      className="p-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors duration-200"
+                    >
+                      <RiCheckDoubleFill size={18} />
                     </button>
                   ) : (
                     <button 
