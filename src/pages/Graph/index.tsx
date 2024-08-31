@@ -14,6 +14,7 @@ function Graph() {
                             </div>
                         </div>
                     </div>
+
                 </section>
             </div>
         </>
