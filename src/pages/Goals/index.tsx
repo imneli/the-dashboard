@@ -23,7 +23,6 @@ function Goals() {
         { id: 1, name: 'Travel', progress: 20, status: 'active', date: new Date() },
         { id: 2, name: 'Home', progress: 30, status: 'active', date: new Date() },
         { id: 3, name: 'Car', progress: 70, status: 'active', date: new Date() },
-        { id: 4, name: 'Other Stuff', progress: 90, status: 'active', date: new Date() },
     ]);
     const [isAddingGoal, setIsAddingGoal] = useState<boolean>(false);
 
