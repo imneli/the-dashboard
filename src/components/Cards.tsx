@@ -73,13 +73,6 @@ const mockTransactions: Transaction[] = [
     isPositive: true,
     category: "Leisure"
   },
-  {
-    id: 7,
-    title: "New Transaction",
-    amount: 75,
-    isPositive: false,
-    category: "Investments"
-  }
 ];
 
 function Cards() {
@@ -130,7 +123,7 @@ function Cards() {
                 {mockTransactions.map((transaction) => (
                     <div 
                         key={transaction.id} 
-                        className="bg-white min-h-[15vh] w-[calc(20%-16px)] flex-shrink-0 rounded-xl shadow-sm flex p-5 flex-col"
+                        className="bg-white min-h-[15vh] w-[calc(15%-16px)] flex-shrink-0 rounded-xl shadow-sm flex p-5 flex-col"
                     >
                         <h3 className='font-semibold'>{transaction.title}</h3>
                         <div className='flex items-center'>

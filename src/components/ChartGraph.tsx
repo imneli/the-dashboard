@@ -40,7 +40,7 @@ export const BarChartOnValueChangeExample = () => {
   return (
     <>
       <BarChart
-        className="min-h-[50vh] max-w-[55vw]"
+        className="max-h-[35vh] max-w-[55vw]"
         data={chartdata}
         index="name"
         categories={["Invests"]}

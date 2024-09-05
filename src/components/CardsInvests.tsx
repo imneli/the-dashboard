@@ -5,9 +5,8 @@ import { SparkAreaChart } from "@tremor/react"
 
 const chartdata = [
   { name: "Apple Inc", symbol: "AAPL", month: "Jan 21", Performance: 4000, price: 179.26, change: "+1.72%" },
-  { name: "Google", symbol: "GOOGL", month: "Feb 21", Performance: 3000, price: 138.21, change: "+0.54%" },
   { name: "Itau", symbol: "ITUB", month: "Mar 21", Performance: 2000, price: 5.80, change: "-0.17%" },
-  { name: "Microsoft", symbol: "MSFT", month: "Apr 21", Performance: 2780, price: 417.42, change: "+2.35%" },
+  
 ]
 
 export function SparkAreaExample() {
@@ -32,7 +31,7 @@ export function SparkAreaExample() {
             index="month"
             categories={["Performance"]}
             colors={["emerald"]}
-            className="h-16 w-full"
+            className="h16 w-full"
           />
         </Card>
       ))}
